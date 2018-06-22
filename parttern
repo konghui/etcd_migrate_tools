@@ -1,0 +1,4 @@
+{
+	"blacklist": ["/*", "/aaa"],
+	"whitelist": []
+}
