@@ -61,8 +61,7 @@ func doMigrate(destFlags *flags.EtcdFlags, srcFlags *flags.EtcdFlags, parttern *
 		}
 		log.Printf("start migrate key = %s to dest node, current %d, total %d\n", key, current, total)
 		if (*destFlags.OverWrite) == true {
-			log.Printf("key=%s, value=%s\n", key, value)
-			//destClient.PutValue(key, value)
+			destClient.PutValue(key, value)
 		} else {
 			destData, err := destClient.GetKeyValues(key)
 			if err != nil {
@@ -73,7 +72,7 @@ func doMigrate(destFlags *flags.EtcdFlags, srcFlags *flags.EtcdFlags, parttern *
 				log.Printf("key=%s, in the dest node has data, and overwirte switcher is false, skip it.\n", key)
 				continue
 			}
-			//destClient.PutValue(key, value)
+			destClient.PutValue(key, value)
 		}
 	}
 }
@@ -117,17 +116,4 @@ func main() {
 		log.Fatalf("error while create parrtern from file %s: %s", *partternFile, err.Error())
 	}
 	doMigrate(destFlags, srcFlags, parttern)
-
-	/*etcdClient, err := generateEtcdClient(destFlags)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-
-	data, err := etcdClient.GetKeyValues("/")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(data)
-	etcdClient.PutValue("/test/test1/222", []byte("12345677654321"))*/
 }
